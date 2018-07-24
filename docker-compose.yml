@@ -1,0 +1,28 @@
+version: "3"
+services:
+  web:
+    ports: 
+      - 8080:8080
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    networks:
+        - web-server
+    environment:
+      - APT_KEY=eadb6da4bb5847a8b5f5b8a633e53ab9
+    depends_on:
+      - redis
+  redis: 
+    image: redis:3.2-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+        - web-server
+volumes:
+  redis_data: 
+
+networks:
+  web-server:
+    driver: overlay
